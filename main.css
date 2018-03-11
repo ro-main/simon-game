@@ -15,17 +15,17 @@
 }
 
 #red {
-    background-color: red;
+    background-color: rgba(255, 0, 0, 0.6);
 }
 
 #blue {
-    background-color: blue;
+    background-color: rgba(0, 0, 255, 0.6);
 }
 
 #green {
-    background-color: green;
+    background-color: rgba(0, 128, 0, 0.6);
 }
 
 #yellow {
-    background-color: yellow;
+    background-color: rgba(255, 255, 0, 0.6);
 }
