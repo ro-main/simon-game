@@ -3,7 +3,24 @@
         <link rel="stylesheet" href="main.css">
     </head>
     <body>
-        <p>Hello world</p>
+        <div id="board">
+            <div id="settings">
+                <button id="on-off" class="setting-button">On/Off</button>
+                <button id="start" class="setting-button">Start</button>
+                <button id="reset" class="setting-button">Reset</button>
+                <div id="score">0</div>
+            </div>    
+            <div id="buttons">
+                <div class="row">
+                    <div id="red" class="button"></div>
+                    <div id="blue" class="button"></div>
+                </div>
+                <div class="row">
+                    <div id="green" class="button"></div>
+                    <div id="yellow" class="button"></div>
+                </div>
+            </div>
+        </div>
         <script async src="main.js"></script>
     </body>
 </html>
