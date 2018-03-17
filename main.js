@@ -12,42 +12,39 @@ const blueDefaultColor = 'rgba(0, 0, 255, 0.6)';
 const greenDefaultColor = 'rgba(0, 128, 0, 0.6)';
 const yellowDefaultColor = 'rgba(255, 255, 0, 0.6)';
 
-const toReplay = [];
-// const played = [];
-let gameOn = false;
+let toReplay = [];
+let played = [];
+let steps = 0;
+let strictMode = false;
 
-function onOff() {
-  if (gameOn) {
-    gameOn = false;
-    document.getElementById('start').removeEventListener('click', () => {
-      start();
-    });
+document.getElementById('reset').addEventListener('click', (e) => {
+  const resetId = e.target.id;
+  document.getElementById(resetId).innerHTML = 'Reset';
+  reset();
+});
 
-    document.getElementById('reset').removeEventListener('click', () => {
-      reset();
-    });
+document.getElementById('strict').addEventListener('click', (e) => {
+  const strictId = e.target.id;
+  if (strictMode) {
+    strictMode = false;
+    document.getElementById(strictId).innerHTML = 'Strict mode (off)';
   } else {
-    gameOn = true;
-    document.getElementById('start').addEventListener('click', () => {
-      start();
-    });
-
-    document.getElementById('reset').addEventListener('click', () => {
-      reset();
-    });
+    strictMode = true;
+    document.getElementById(strictId).innerHTML = 'Strict mode (on)';
   }
-}
+});
+
+document.getElementById('buttons').addEventListener('click', (e) => {
+  const colorPlayed = e.target.id;
+  check(colorPlayed);
+  computerPlays();
+});
 
 function reset() {
-
-}
-
-function start() {
+  toReplay = [];
+  played = [];
+  steps = 0;
   computerPlays();
-  document.getElementById('buttons').addEventListener('click', (e) => {
-    const colorPlayed = e.target.id;
-    check(colorPlayed);
-  });
 }
 
 function computerPlays() {
@@ -97,7 +94,3 @@ function playSound(color) {
   }
   yellowSound.play();
 }
-
-document.getElementById('on-off').addEventListener('click', () => {
-  onOff();
-});
