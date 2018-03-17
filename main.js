@@ -7,6 +7,11 @@ const blueSound = new Audio('https://s3.amazonaws.com/freecodecamp/simonSound2.m
 const greenSound = new Audio('https://s3.amazonaws.com/freecodecamp/simonSound3.mp3');
 const yellowSound = new Audio('https://s3.amazonaws.com/freecodecamp/simonSound4.mp3');
 
+redSound.loop = true;
+blueSound.loop = true;
+greenSound.loop = true;
+yellowSound.loop = true;
+
 const redDefaultColor = 'rgba(255, 0, 0, 0.6)';
 const blueDefaultColor = 'rgba(0, 0, 255, 0.6)';
 const greenDefaultColor = 'rgba(0, 128, 0, 0.6)';
@@ -76,27 +81,38 @@ function incrementSequence() {
 
 function playSequence() {
   for (let i = 0; i < toReplay.length; i += 1) {
-    playSequenceItem(i);
+    const currentItem = currentItemBuilder(toReplay[i]);
+    playSequenceItem(currentItem);
   }
 }
 
-function playSequenceItem(color) {
-  document.getElementById(color).style.backgroundColor = color;
-  if (color === 'red') {
-    document.getElementById(color).style.backgroundColor = redDefaultColor;
-    redSound.play();
-  } else if (color === 'blue') {
-    document.getElementById(color).style.backgroundColor = blueDefaultColor;
-    blueSound.play();
-  } else if (color === 'green') {
-    document.getElementById(color).style.backgroundColor = greenDefaultColor;
-    greenSound.play();
+function currentItemBuilder(currentColor) {
+  const itemObject = {
+    color: currentColor,
+    sound: '',
+  };
+
+  if (currentColor === 'red') {
+    itemObject.sound = redSound;
+  } else if (currentColor === 'blue') {
+    itemObject.sound = blueSound;
+  } else if (currentColor === 'green') {
+    itemObject.sound = greenSound;
+  } else {
+    itemObject.sound = yellowSound;
   }
-  yellowSound.play();
+
+  return itemObject;
+}
+
+
+function playSequenceItem(item) {
+  document.getElementById(item.color).style.backgroundColor = item.color;
+  item.sound.play();
 
   setTimeout(() => {
-    resetColor(color);
-  }, 1000);
+    resetColor(item.color);
+  }, 500);
 }
 
 function resetColor(color) {
@@ -106,8 +122,9 @@ function resetColor(color) {
     document.getElementById(color).style.backgroundColor = blueDefaultColor;
   } else if (color === 'green') {
     document.getElementById(color).style.backgroundColor = greenDefaultColor;
+  } else {
+    document.getElementById(color).style.backgroundColor = yellowDefaultColor;
   }
-  document.getElementById(color).style.backgroundColor = yellowDefaultColor;
 }
 
 function check() {
