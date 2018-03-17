@@ -12,6 +12,7 @@ const blueDefaultColor = 'rgba(0, 0, 255, 0.6)';
 const greenDefaultColor = 'rgba(0, 128, 0, 0.6)';
 const yellowDefaultColor = 'rgba(255, 255, 0, 0.6)';
 
+let playerTurn = false;
 let toReplay = [];
 let played = [];
 let steps = 0;
@@ -35,9 +36,19 @@ document.getElementById('strict').addEventListener('click', (e) => {
 });
 
 document.getElementById('buttons').addEventListener('click', (e) => {
-  const colorPlayed = e.target.id;
-  check(colorPlayed);
-  computerPlays();
+  if (playerTurn) {
+    const colorPlayed = e.target.id;
+    const correct = check(colorPlayed);
+    const correctSequence = false;
+    if (correct) {
+      increaseScore();
+      computerPlays();
+    } else if (strictMode) {
+      gameOver();
+    } else {
+      playSequence();
+    }
+  }
 });
 
 function reset() {
@@ -47,15 +58,65 @@ function reset() {
   computerPlays();
 }
 
+function gameOver() {
+  reset();
+}
+
 function computerPlays() {
+  playerTurn = false;
+  incrementSequence();
+  playSequence();
+  playerTurn = true;
+}
+
+function incrementSequence() {
   const chosenColor = choosingColor();
   toReplay.push(chosenColor);
-  displayChosenColor(chosenColor);
-  playSound(chosenColor);
+}
+
+function playSequence() {
+  for (let i = 0; i < toReplay.length; i += 1) {
+    playSequenceItem(i);
+  }
+}
+
+function playSequenceItem(color) {
+  document.getElementById(color).style.backgroundColor = color;
+  if (color === 'red') {
+    document.getElementById(color).style.backgroundColor = redDefaultColor;
+    redSound.play();
+  } else if (color === 'blue') {
+    document.getElementById(color).style.backgroundColor = blueDefaultColor;
+    blueSound.play();
+  } else if (color === 'green') {
+    document.getElementById(color).style.backgroundColor = greenDefaultColor;
+    greenSound.play();
+  }
+  yellowSound.play();
+
+  setTimeout(() => {
+    resetColor(color);
+  }, 1000);
+}
+
+function resetColor(color) {
+  if (color === 'red') {
+    document.getElementById(color).style.backgroundColor = redDefaultColor;
+  } else if (color === 'blue') {
+    document.getElementById(color).style.backgroundColor = blueDefaultColor;
+  } else if (color === 'green') {
+    document.getElementById(color).style.backgroundColor = greenDefaultColor;
+  }
+  document.getElementById(color).style.backgroundColor = yellowDefaultColor;
 }
 
 function check() {
 
+}
+
+function increaseScore() {
+  steps += 1;
+  document.getElementById('score').innerHTML = steps;
 }
 
 function choosingColor() {
@@ -68,29 +129,4 @@ function choosingColor() {
     return 'green';
   }
   return 'yellow';
-}
-
-function displayChosenColor(color) {
-  document.getElementById(color).style.backgroundColor = color;
-  setTimeout(() => {
-    if (color === 'red') {
-      document.getElementById(color).style.backgroundColor = redDefaultColor;
-    } else if (color === 'blue') {
-      document.getElementById(color).style.backgroundColor = blueDefaultColor;
-    } else if (color === 'green') {
-      document.getElementById(color).style.backgroundColor = greenDefaultColor;
-    }
-    document.getElementById(color).style.backgroundColor = yellowDefaultColor;
-  }, 1000);
-}
-
-function playSound(color) {
-  if (color === 'red') {
-    redSound.play();
-  } else if (color === 'blue') {
-    blueSound.play();
-  } else if (color === 'green') {
-    greenSound.play();
-  }
-  yellowSound.play();
 }
