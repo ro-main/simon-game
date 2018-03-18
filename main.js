@@ -23,7 +23,7 @@ let played = [];
 let steps = 0;
 let strictMode = false;
 
-document.getElementById('reset').addEventListener('click', (e) => {
+document.getElementById('reset').addEventListener('mouseup', (e) => {
   const resetId = e.target.id;
   document.getElementById(resetId).innerHTML = 'Reset';
   reset();
@@ -43,23 +43,37 @@ document.getElementById('strict').addEventListener('click', (e) => {
 document.getElementById('buttons').addEventListener('click', (e) => {
   if (playerTurn) {
     const colorPlayed = e.target.id;
+    const objectPlayed = currentItemBuilder(colorPlayed);
+    playSequenceItem(objectPlayed);
     const correct = check(colorPlayed);
-    const correctSequence = false;
     if (correct) {
-      increaseScore();
-      computerPlays();
+      played.push(colorPlayed);
     } else if (strictMode) {
       gameOver();
     } else {
       playSequence();
     }
+
+    if (played.length === toReplay.length) {
+      increaseScore();
+      computerPlays();
+    }
   }
 });
+
+function check(currentColor) {
+  const toReplayCurrentItem = toReplay[played.length];
+  if (currentColor === toReplayCurrentItem) {
+    return true;
+  }
+  return false;
+}
 
 function reset() {
   toReplay = [];
   played = [];
   steps = 0;
+  document.getElementById('score').innerHTML = '0';
   computerPlays();
 }
 
@@ -125,10 +139,6 @@ function resetColor(color) {
   } else {
     document.getElementById(color).style.backgroundColor = yellowDefaultColor;
   }
-}
-
-function check() {
-
 }
 
 function increaseScore() {
