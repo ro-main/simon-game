@@ -2,16 +2,6 @@
 /* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
 /* eslint no-use-before-define: ["error", { "functions": false }] */
 
-const redSound = new Audio('https://s3.amazonaws.com/freecodecamp/simonSound1.mp3');
-const blueSound = new Audio('https://s3.amazonaws.com/freecodecamp/simonSound2.mp3');
-const greenSound = new Audio('https://s3.amazonaws.com/freecodecamp/simonSound3.mp3');
-const yellowSound = new Audio('https://s3.amazonaws.com/freecodecamp/simonSound4.mp3');
-
-redSound.loop = true;
-blueSound.loop = true;
-greenSound.loop = true;
-yellowSound.loop = true;
-
 const redDefaultColor = 'rgba(255, 0, 0, 0.6)';
 const blueDefaultColor = 'rgba(0, 0, 255, 0.6)';
 const greenDefaultColor = 'rgba(0, 128, 0, 0.6)';
@@ -22,8 +12,9 @@ let toReplay = [];
 let played = [];
 let steps = 0;
 let strictMode = false;
+let colorPlayed;
 
-document.getElementById('reset').addEventListener('mouseup', (e) => {
+document.getElementById('reset').addEventListener('click', (e) => {
   const resetId = e.target.id;
   document.getElementById(resetId).innerHTML = 'Reset';
   reset();
@@ -40,24 +31,30 @@ document.getElementById('strict').addEventListener('click', (e) => {
   }
 });
 
-document.getElementById('buttons').addEventListener('click', (e) => {
+document.getElementById('buttons').addEventListener('mousedown', (e) => {
   if (playerTurn) {
-    const colorPlayed = e.target.id;
-    const objectPlayed = currentItemBuilder(colorPlayed);
-    playSequenceItem(objectPlayed);
-    const correct = check(colorPlayed);
-    if (correct) {
-      played.push(colorPlayed);
-    } else if (strictMode) {
-      gameOver();
-    } else {
-      playSequence();
-    }
+    colorPlayed = e.target.id;
+    emphasizeColor(colorPlayed);
+    // playSound(colorPlayed);
+  }
+});
 
-    if (played.length === toReplay.length) {
-      increaseScore();
-      computerPlays();
-    }
+document.getElementById('buttons').addEventListener('mouseup', () => {
+  resetColor(colorPlayed);
+  // stopSound(colorPlayed);
+  const correct = check(colorPlayed);
+  if (correct) {
+    played.push(colorPlayed);
+  } else if (strictMode) {
+    gameOver();
+  } else {
+    playSequence();
+  }
+
+  if (played.length === toReplay.length) {
+    increaseScore();
+    played = [];
+    computerPlays();
   }
 });
 
@@ -71,7 +68,6 @@ function check(currentColor) {
 
 function reset() {
   toReplay = [];
-  played = [];
   steps = 0;
   document.getElementById('score').innerHTML = '0';
   computerPlays();
@@ -95,38 +91,21 @@ function incrementSequence() {
 
 function playSequence() {
   for (let i = 0; i < toReplay.length; i += 1) {
-    const currentItem = currentItemBuilder(toReplay[i]);
-    playSequenceItem(currentItem);
+    playSequenceItem(toReplay[i]);
   }
 }
-
-function currentItemBuilder(currentColor) {
-  const itemObject = {
-    color: currentColor,
-    sound: '',
-  };
-
-  if (currentColor === 'red') {
-    itemObject.sound = redSound;
-  } else if (currentColor === 'blue') {
-    itemObject.sound = blueSound;
-  } else if (currentColor === 'green') {
-    itemObject.sound = greenSound;
-  } else {
-    itemObject.sound = yellowSound;
-  }
-
-  return itemObject;
-}
-
 
 function playSequenceItem(item) {
-  document.getElementById(item.color).style.backgroundColor = item.color;
-  item.sound.play();
-
+  emphasizeColor(item);
+  // playSound(item);
   setTimeout(() => {
-    resetColor(item.color);
+    resetColor(item);
+    // stopSound(item);
   }, 500);
+}
+
+function emphasizeColor(color) {
+  document.getElementById(color).style.backgroundColor = color;
 }
 
 function resetColor(color) {
@@ -140,6 +119,16 @@ function resetColor(color) {
     document.getElementById(color).style.backgroundColor = yellowDefaultColor;
   }
 }
+
+/* function playSound(color) {
+  const audioId = `'audio' + ${color}`;
+  document.getElementById(audioId).play();
+}
+
+function stopSound(color) {
+  const audioId = `'audio' + ${color}`;
+  document.getElementById(audioId).pause();
+} */
 
 function increaseScore() {
   steps += 1;
