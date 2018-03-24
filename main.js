@@ -70,7 +70,7 @@ document.getElementById('buttons').addEventListener('mouseup', () => {
     if (correct) {
       increaseScore();
     }
-    if (steps === 20) {
+    if (steps === 2) {
       victory();
     } else {
       computerPlays();
@@ -94,6 +94,7 @@ function reset() {
   toReplay = [];
   steps = 0;
   document.getElementById('score').innerHTML = '0';
+  document.getElementById('victory').style.visibility = 'hidden';
   resetAllColors();
   computerPlays();
 }
@@ -103,18 +104,16 @@ function gameOver() {
 }
 
 function victory() {
-  victoryAnimation();
+  document.getElementById('red').style.backgroundColor = '#9C27B0';
+  document.getElementById('blue').style.backgroundColor = '#9C27B0';
+  document.getElementById('yellow').style.backgroundColor = '#9C27B0';
+  document.getElementById('green').style.backgroundColor = '#9C27B0';
+  document.getElementById('victory').style.visibility = 'visible';
   setTimeout(() => {
     reset();
   }, 3000);
 }
 
-function victoryAnimation() {
-  document.getElementById('red').style.backgroundColor = '#9C27B0';
-  document.getElementById('blue').style.backgroundColor = '#9C27B0';
-  document.getElementById('yellow').style.backgroundColor = '#9C27B0';
-  document.getElementById('green').style.backgroundColor = '#9C27B0';
-}
 
 function computerPlays() {
   playerTurn = false;
