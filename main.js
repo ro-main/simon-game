@@ -70,7 +70,7 @@ document.getElementById('buttons').addEventListener('mouseup', () => {
     if (correct) {
       increaseScore();
     }
-    if (steps === 2) {
+    if (steps === 20) {
       victory();
     } else {
       computerPlays();
