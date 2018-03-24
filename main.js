@@ -80,7 +80,9 @@ function gameOver() {
 function computerPlays() {
   playerTurn = false;
   incrementSequence();
-  playSequence();
+  setTimeout(() => {
+    playSequence();
+  }, 500);
   playerTurn = true;
 }
 
@@ -90,18 +92,27 @@ function incrementSequence() {
 }
 
 function playSequence() {
-  for (let i = 0; i < toReplay.length; i += 1) {
-    playSequenceItem(toReplay[i]);
+  const toReplayLength = toReplay.length;
+  function playingSmoothly(currentStep) {
+    if (currentStep < toReplayLength) {
+      const currentColor = toReplay[currentStep];
+      playSequenceItem(currentColor);
+      setTimeout(() => {
+        resetColor(currentColor);
+        // stopSound(item);
+      }, 500);
+      setTimeout(() => {
+        const n = currentStep + 1;
+        playingSmoothly(n);
+      }, 1000);
+    }
   }
+  playingSmoothly(0);
 }
 
 function playSequenceItem(item) {
   emphasizeColor(item);
   // playSound(item);
-  setTimeout(() => {
-    resetColor(item);
-    // stopSound(item);
-  }, 500);
 }
 
 function emphasizeColor(color) {
