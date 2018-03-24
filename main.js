@@ -45,14 +45,18 @@ document.getElementById('buttons').addEventListener('mouseup', () => {
   const correct = check(colorPlayed);
   if (correct) {
     played.push(colorPlayed);
+    increaseScore();
   } else if (strictMode) {
     gameOver();
   } else {
-    playSequence();
+    errorPrompt();
+    setTimeout(() => {
+      resetColor('error');
+      playSequence();
+    }, 1000);
   }
 
   if (played.length === toReplay.length) {
-    increaseScore();
     played = [];
     computerPlays();
   }
@@ -64,6 +68,10 @@ function check(currentColor) {
     return true;
   }
   return false;
+}
+
+function errorPrompt() {
+  document.getElementById('error').style.backgroundColor = 'red';
 }
 
 function reset() {
@@ -126,8 +134,10 @@ function resetColor(color) {
     document.getElementById(color).style.backgroundColor = blueDefaultColor;
   } else if (color === 'green') {
     document.getElementById(color).style.backgroundColor = greenDefaultColor;
-  } else {
+  } else if (color === 'yellow') {
     document.getElementById(color).style.backgroundColor = yellowDefaultColor;
+  } else {
+    document.getElementById(color).style.backgroundColor = 'grey';
   }
 }
 

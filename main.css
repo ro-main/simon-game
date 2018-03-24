@@ -4,6 +4,19 @@
     width: 200px;
 }
 
+.inline {
+    display: inline-block;
+}
+
+#error {
+    background: grey;
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    border-radius: 100%;
+    margin-left: 130px;
+}
+
 .row {
     display: block;
 }
