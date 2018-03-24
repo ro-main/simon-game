@@ -1,11 +1,23 @@
+html {
+    background: darkgrey;
+}
+
 #board {
     text-align: center;
     margin: auto;
-    width: 200px;
+    width: 210px;
 }
 
 .inline {
     display: inline-block;
+}
+
+.score {
+    background: black;
+    color: white;
+    font-weight: 600;
+    padding: 5px;
+    border-radius: 5px;
 }
 
 #error {
@@ -21,24 +33,37 @@
     display: block;
 }
 
+.row-settings {
+    margin-top: 5px;
+}
+
+.row-settings > button {
+    font-weight: 600;
+}
+
 .button {
-    width: 100px;
-    height: 100px;
-    display: table-cell;
+    width: 75px;
+    height: 75px;
+    display: inline-block;
+    border: solid 12px;
 }
 
 #red {
     background-color: rgba(255, 0, 0, 0.6);
+    border-radius: 100% 0% 0% 0%;
 }
 
 #blue {
     background-color: rgba(0, 0, 255, 0.6);
+    border-radius: 0% 100% 0% 0%;
 }
 
 #green {
     background-color: rgba(0, 128, 0, 0.6);
+    border-radius: 0% 0% 0% 100%;
 }
 
 #yellow {
     background-color: rgba(255, 255, 0, 0.6);
+    border-radius: 0% 0% 100% 0%;
 }

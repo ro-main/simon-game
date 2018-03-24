@@ -25,9 +25,11 @@ document.getElementById('strict').addEventListener('click', (e) => {
   if (strictMode) {
     strictMode = false;
     document.getElementById(strictId).innerHTML = 'Strict mode (off)';
+    document.getElementById(strictId).style.color = 'black';
   } else {
     strictMode = true;
     document.getElementById(strictId).innerHTML = 'Strict mode (on)';
+    document.getElementById(strictId).style.color = 'green';
   }
 });
 
@@ -45,7 +47,6 @@ document.getElementById('buttons').addEventListener('mouseup', () => {
   const correct = check(colorPlayed);
   if (correct) {
     played.push(colorPlayed);
-    increaseScore();
   } else if (strictMode) {
     gameOver();
   } else {
@@ -58,7 +59,14 @@ document.getElementById('buttons').addEventListener('mouseup', () => {
 
   if (played.length === toReplay.length) {
     played = [];
-    computerPlays();
+    if (correct) {
+      increaseScore();
+    }
+    if (steps === 20) {
+      victory();
+    } else {
+      computerPlays();
+    }
   }
 });
 
@@ -83,6 +91,13 @@ function reset() {
 
 function gameOver() {
   reset();
+}
+
+function victory() {
+  victoryAnimation();
+  setTimeout(() => {
+    reset();
+  }, 3000);
 }
 
 function computerPlays() {
